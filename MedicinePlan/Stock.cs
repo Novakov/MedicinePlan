@@ -40,5 +40,15 @@ namespace MedicinePlan
         {
             return this.AsOfDate.ToShortDateString() + "#" + this.Count;
         }
+
+        public Stock Reduce(int used, DateTime end)
+        {
+            if (used > this.Count)
+            {
+                return new Stock(0, end);
+            }
+
+            return new Stock(this.Count - used, end);
+        }
     }
 }

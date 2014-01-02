@@ -35,7 +35,7 @@ namespace MedicinePlan
 
                 var used = applicableDosages[i].Value.CalculateUsed(start, end);
 
-                remainingStock = new Stock(remainingStock.Count - used, end);
+                remainingStock = remainingStock.Reduce(used, end);
             }
 
             return remainingStock;
