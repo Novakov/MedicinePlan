@@ -22,53 +22,55 @@ namespace MedicinePlan
 
         public Stock CalculateRemaining(Stock initialStock, DateTime asof)
         {
-            var applicableDosages = this.dosages.Where(x => x.Key >= initialStock.AsOfDate && x.Key <= asof).OrderBy(x => x.Key).ToList();
+            var applicableDosages = this.Dosages(asof).Where(x => x.Start >= initialStock.AsOfDate && x.End <= asof);
 
-            applicableDosages.Add(new KeyValuePair<DateTime, IDosage>(asof, null));
-
-            var remainingStock = initialStock;
-
-            for (int i = 0; i <= applicableDosages.Count - 2; i++)
-            {
-                var start = applicableDosages[i].Key;
-                var end = applicableDosages[i + 1].Key;
-
-                var used = applicableDosages[i].Value.CalculateUsed(start, end);
-
-                remainingStock = remainingStock.Reduce(used, end);
-            }
-
-            return remainingStock;
+            return applicableDosages.Aggregate(initialStock, (stock, dosage) => stock.Reduce(dosage.Dosage.CalculateUsed(dosage.Start, dosage.End), dosage.End));
         }
 
         public DateTime CalculateExhaustionDate(Stock stock)
         {
-            var applicableDosages = this.dosages.Where(x => x.Key >= stock.AsOfDate).OrderBy(x => x.Key).ToList();
-            applicableDosages.Add(new KeyValuePair<DateTime, IDosage>(DateTime.MaxValue, null));
+            var applicableDosages = this.Dosages(DateTime.MaxValue).Where(x => x.Start >= stock.AsOfDate);
 
             var remaining = stock;
-            int i = 0;
 
-            while (remaining.Count > 0)
+            foreach (var dosage in applicableDosages)
             {
-                var start = applicableDosages[i].Key;
-                var end = applicableDosages[i + 1].Key;
-
-                var used = applicableDosages[i].Value.CalculateUsed(start, end);
+                var used = dosage.Dosage.CalculateUsed(dosage.Start, dosage.End);
 
                 if (used > remaining.Count)
                 {
-                    return applicableDosages[i].Value.CalculateExhaustionDate(remaining);
-                }
-                else
-                {
-                    remaining = remaining.Reduce(used, end);
+                    return dosage.Dosage.CalculateExhaustionDate(remaining);
                 }
 
-                i++;
+                remaining = remaining.Reduce(used, dosage.End);
             }
 
-            return remaining.AsOfDate;
+            throw new InvalidOperationException("Dosages cannot exhaust stock");
+        }
+
+        private IEnumerable<DosageValidOver> Dosages(DateTime lastDosageValidTo)
+        {
+            var list = this.dosages.ToList();
+            list.Add(new KeyValuePair<DateTime, IDosage>(lastDosageValidTo, null));
+
+            for (int i = 0; i <= list.Count - 2; i++)
+            {
+                yield return new DosageValidOver(list[i].Value, list[i].Key, list[i + 1].Key);
+            }
+        }
+    }
+
+    internal class DosageValidOver
+    {
+        public IDosage Dosage { get; private set; }
+        public DateTime Start { get; private set; }
+        public DateTime End { get; private set; }
+
+        public DosageValidOver(IDosage dosage, DateTime start, DateTime end)
+        {
+            Dosage = dosage;
+            Start = start;
+            End = end;
         }
     }
 }
