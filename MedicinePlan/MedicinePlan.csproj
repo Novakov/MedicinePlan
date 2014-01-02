@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="DosageValidOver.cs" />
     <Compile Include="IDosage.cs" />
     <Compile Include="Plan.cs" />
     <Compile Include="CountPerDayDosage.cs" />

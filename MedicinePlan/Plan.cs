@@ -22,20 +22,28 @@ namespace MedicinePlan
 
         public Stock CalculateRemaining(Stock initialStock, DateTime asof)
         {
-            var applicableDosages = this.Dosages(asof).Where(x => x.Start >= initialStock.AsOfDate && x.End <= asof);
+            var applicableDosages = this.DosagesValidOn(initialStock.AsOfDate, asof);
 
-            return applicableDosages.Aggregate(initialStock, (stock, dosage) => stock.Reduce(dosage.Dosage.CalculateUsed(dosage.Start, dosage.End), dosage.End));
+            var remaining = initialStock;
+            foreach (var dosage in applicableDosages)
+            {
+                var used = dosage.Dosage.CalculateUsed(remaining.AsOfDate, dosage.End);
+
+                remaining = remaining.Reduce(used, dosage.End);
+            }
+
+            return remaining;
         }
 
         public DateTime CalculateExhaustionDate(Stock stock)
         {
-            var applicableDosages = this.Dosages(DateTime.MaxValue).Where(x => x.Start >= stock.AsOfDate);
+            var applicableDosages = this.DosagesValidOn(stock.AsOfDate, DateTime.MaxValue);
 
             var remaining = stock;
 
             foreach (var dosage in applicableDosages)
             {
-                var used = dosage.Dosage.CalculateUsed(dosage.Start, dosage.End);
+                var used = dosage.Dosage.CalculateUsed(remaining.AsOfDate, dosage.End);
 
                 if (used > remaining.Count)
                 {
@@ -48,29 +56,21 @@ namespace MedicinePlan
             throw new InvalidOperationException("Dosages cannot exhaust stock");
         }
 
-        private IEnumerable<DosageValidOver> Dosages(DateTime lastDosageValidTo)
+        private IEnumerable<DosageValidOver> DosagesValidOn(DateTime from, DateTime to)
         {
             var list = this.dosages.ToList();
-            list.Add(new KeyValuePair<DateTime, IDosage>(lastDosageValidTo, null));
+            list.Add(new KeyValuePair<DateTime, IDosage>(to, null));
 
             for (int i = 0; i <= list.Count - 2; i++)
             {
-                yield return new DosageValidOver(list[i].Value, list[i].Key, list[i + 1].Key);
+                var start = list[i].Key.NotBefore(from);
+                var end = list[i + 1].Key.NotAfter(to);
+
+                if (end >= from && start <= to)
+                {
+                    yield return new DosageValidOver(list[i].Value, start, end);
+                }
             }
-        }
-    }
-
-    internal class DosageValidOver
-    {
-        public IDosage Dosage { get; private set; }
-        public DateTime Start { get; private set; }
-        public DateTime End { get; private set; }
-
-        public DosageValidOver(IDosage dosage, DateTime start, DateTime end)
-        {
-            Dosage = dosage;
-            Start = start;
-            End = end;
         }
     }
 }
