@@ -50,5 +50,38 @@ namespace Tests
             // assert
             Assert.That(remaining, Is.EqualTo(new Stock(30, calculateFor)));
         }
+
+        [Test]
+        public void ShouldReturnProperExhaustionDateWithOneDosage()
+        {
+            // arrange
+            var plan = new Plan();
+            var startDate = new DateTime(2014, 1, 1);
+            plan.RegisterDosage(startDate, new CountPerDayDosage(5));
+            var stock = new Stock(100, startDate);
+
+            // act
+            var exhaustionDate = plan.CalculateExhaustionDate(stock);
+
+            // assert
+            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 21)));
+        }
+
+        [Test]
+        public void ShouldReturnProperExhaustionDateWithTwoDosages()
+        {
+            // arrange
+            var plan = new Plan();
+            var startDate = new DateTime(2014, 1, 1);
+            plan.RegisterDosage(startDate, new CountPerDayDosage(5));
+            plan.RegisterDosage(new DateTime(2014, 1, 5), new CountPerDayDosage(10));
+            var stock = new Stock(100, startDate);
+
+            // act
+            var exhaustionDate = plan.CalculateExhaustionDate(stock);
+
+            // assert
+            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 13)));
+        }
     }
 }

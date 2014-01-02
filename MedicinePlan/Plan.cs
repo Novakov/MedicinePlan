@@ -40,5 +40,35 @@ namespace MedicinePlan
 
             return remainingStock;
         }
+
+        public DateTime CalculateExhaustionDate(Stock stock)
+        {
+            var applicableDosages = this.dosages.Where(x => x.Key >= stock.AsOfDate).OrderBy(x => x.Key).ToList();
+            applicableDosages.Add(new KeyValuePair<DateTime, IDosage>(DateTime.MaxValue, null));
+
+            var remaining = stock;
+            int i = 0;
+
+            while (remaining.Count > 0)
+            {
+                var start = applicableDosages[i].Key;
+                var end = applicableDosages[i + 1].Key;
+
+                var used = applicableDosages[i].Value.CalculateUsed(start, end);
+
+                if (used > remaining.Count)
+                {
+                    return applicableDosages[i].Value.CalculateExhaustionDate(remaining);
+                }
+                else
+                {
+                    remaining = remaining.Reduce(used, end);
+                }
+
+                i++;
+            }
+
+            return remaining.AsOfDate;
+        }
     }
 }
