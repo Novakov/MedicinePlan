@@ -3,7 +3,9 @@
 namespace MedicinePlan
 {
     public class Stock : IEquatable<Stock>
-    {        
+    {
+        public static readonly Stock Empty = new Stock(0, DateTime.MinValue);
+
         public int Count { get; private set; }
         public DateTime AsOfDate { get; private set; }
 
@@ -49,6 +51,11 @@ namespace MedicinePlan
             }
 
             return new Stock(this.Count - used, end);
+        }
+
+        public Stock Add(Stock stockToAdd)
+        {            
+            return new Stock(this.Count + stockToAdd.Count, DateTimeExtensions.Latest(this.AsOfDate, stockToAdd.AsOfDate));
         }
     }
 }

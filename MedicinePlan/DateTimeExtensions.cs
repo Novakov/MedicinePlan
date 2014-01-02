@@ -27,5 +27,10 @@ namespace MedicinePlan
 
             return @this;
         }
+
+        public static DateTime Latest(params DateTime[] dateTimes)
+        {
+            return dateTimes.Max();
+        }
     }
 }
