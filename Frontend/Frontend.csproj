@@ -84,6 +84,7 @@
     <Compile Include="ViewModels\AddMedicineViewModel.cs" />
     <Compile Include="ViewModels\DesignMainViewModel.cs" />
     <Compile Include="ViewModels\DosageStringValueConverter.cs" />
+    <Compile Include="ViewModels\ExhaustionDateBackgroundValueConverter.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MedicineStatus.cs" />
     <Compile Include="ViewModels\RefillAllMedicinesViewModel.cs" />

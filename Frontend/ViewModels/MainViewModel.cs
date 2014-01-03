@@ -31,7 +31,7 @@ namespace Frontend.ViewModels
             this.supplies = supplies;
 
             this.asOfDate = DateTime.Today;
-
+            
             this.AddMedicineCommand = new DelegateCommand(AddMedicine);
             this.RefillCommand = new DelegateCommand<string>(RefillMedicine);
             this.RefillAllCommand = new DelegateCommand(RefillAllMedicine);
@@ -50,14 +50,14 @@ namespace Frontend.ViewModels
             if (window.ShowDialog() == true)
             {
                 this.supplies.Refill(viewModel.Stocks.ToDictionary(x => new Medicine(x.MedicineName), x => new Stock(x.Count, viewModel.Date)));
-                
-                this.DumpSuppliesStatus();                
+
+                this.DumpSuppliesStatus();
             }
         }
 
         private void RefillMedicine(string medicineName)
         {
-            var viewModel = new RefillMedicineViewModel {MedicineName = medicineName};
+            var viewModel = new RefillMedicineViewModel { MedicineName = medicineName };
 
             var window = new RefillMedicineWindow(viewModel);
 
@@ -77,10 +77,11 @@ namespace Frontend.ViewModels
             {
                 this.Medicines.Add(new MedicineStatus
                 {
+                    AsOfDate = this.asOfDate,
                     Name = medicine.Name,
                     Dosage = this.supplies.CurrentDosage(medicine, this.asOfDate),
                     ExhaustionDate = this.supplies.ExhaustionOf(medicine),
-                    Remaining = this.supplies.RemainingStock(medicine, this.asOfDate).Count
+                    Remaining = this.supplies.RemainingStock(medicine, this.asOfDate).Count,                    
                 });
             }
         }
