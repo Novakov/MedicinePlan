@@ -12,8 +12,15 @@ namespace Frontend.ViewModels
     public class MainViewModel
     {
         private readonly Supplies supplies;
+        private DateTime asOfDate;
 
         public ObservableCollection<MedicineStatus> Medicines { get; set; }
+
+        public DateTime AsOfDate
+        {
+            get { return this.asOfDate; }
+            set { this.asOfDate = value; this.DumpSuppliesStatus(); }
+        }
 
         public ICommand AddMedicineCommand { get; set; }
         public ICommand RefillCommand { get; set; }
@@ -22,6 +29,8 @@ namespace Frontend.ViewModels
         public MainViewModel(Supplies supplies)
         {
             this.supplies = supplies;
+
+            this.asOfDate = DateTime.Today;
 
             this.AddMedicineCommand = new DelegateCommand(AddMedicine);
             this.RefillCommand = new DelegateCommand<string>(RefillMedicine);
@@ -69,9 +78,9 @@ namespace Frontend.ViewModels
                 this.Medicines.Add(new MedicineStatus
                 {
                     Name = medicine.Name,
-                    Dosage = this.supplies.CurrentDosage(medicine, DateTime.Today),
+                    Dosage = this.supplies.CurrentDosage(medicine, this.asOfDate),
                     ExhaustionDate = this.supplies.ExhaustionOf(medicine),
-                    Remaining = this.supplies.RemainingStock(medicine, DateTime.Today).Count
+                    Remaining = this.supplies.RemainingStock(medicine, this.asOfDate).Count
                 });
             }
         }

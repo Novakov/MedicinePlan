@@ -25,6 +25,16 @@
                 FontSize="15"                
                 Content="Uzupełnij wszystkie"
                 Command="{Binding RefillAllCommand}"/>
+            
+            <TextBlock 
+                Margin="10,0,0,0"
+                VerticalAlignment="Center"
+                Text="Pokaż stan na:"/>
+            <DatePicker
+                Margin="10,0,0,0"                
+                SelectedDateFormat="Long"                
+                SelectedDate="{Binding AsOfDate}"
+                />
         </StackPanel>
 
         <ItemsControl 
