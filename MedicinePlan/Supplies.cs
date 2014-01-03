@@ -55,6 +55,16 @@ namespace MedicinePlan
             return this[medicine].Stock;
         }
 
+        public IEnumerable<Medicine> GetMedicines()
+        {
+            return this.medicines.Keys;
+        }
+
+        public IDosage CurrentDosage(Medicine medicine, DateTime asof)
+        {
+            return this[medicine].Plan.CurrentDosage(asof);
+        }
+
         private class MedicineState
         {
             public MedicineState()

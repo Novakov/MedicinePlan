@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MedicinePlan;
 
 namespace Frontend
 {
@@ -24,7 +25,10 @@ namespace Frontend
         {
             InitializeComponent();
 
-            this.DataContext = new ViewModels.DesignMainViewModel();
+            var supplies = new Supplies();
+            supplies.AddDosage(new Medicine("VitaminumC"), DateTime.Today.AddDays(-7), new CountPerDayDosage(5));
+
+            this.DataContext = new ViewModels.MainViewModel(supplies);
         }
     }
 }

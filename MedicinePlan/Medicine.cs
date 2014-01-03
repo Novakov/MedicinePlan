@@ -4,16 +4,16 @@ namespace MedicinePlan
 {
     public class Medicine : IEquatable<Medicine>
     {
-        private readonly string name;
+        public string Name { get; private set; }
 
         public Medicine(string name)
         {
-            this.name = name;
+            this.Name = name;
         }
 
         public bool Equals(Medicine other)
         {
-            return this.name == other.name;
+            return this.Name == other.Name;
         }
 
         public override bool Equals(object obj)
@@ -23,7 +23,7 @@ namespace MedicinePlan
 
         public override int GetHashCode()
         {
-            return (name != null ? name.GetHashCode() : 0);
+            return (this.Name != null ? this.Name.GetHashCode() : 0);
         }
     }
 }

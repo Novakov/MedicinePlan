@@ -6,7 +6,7 @@ namespace Frontend.ViewModels
 {
     public class DesignMainViewModel : MainViewModel
     {
-        public DesignMainViewModel()
+        public DesignMainViewModel() : base(new Supplies())
         {
             this.Medicines = new ObservableCollection<MedicineStatus>
             {

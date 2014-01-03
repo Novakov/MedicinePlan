@@ -1,0 +1,28 @@
+﻿<Window x:Class="Frontend.RefillMedicineWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Frontend.ViewModels"        
+        xmlns:local="clr-namespace:Frontend"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"  
+        d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:RefillMedicineViewModel}}"
+        Title="{Binding MedicineName, StringFormat='{}Uzupełnianie {0}'}" Height="164" Width="300"
+        WindowStyle="ToolWindow">
+    <StackPanel Margin="5,5,5,5">        
+        <TextBlock>Data uzupełnienia</TextBlock>
+        <DatePicker SelectedDate="{Binding Date}" SelectedDateFormat="Long"/>
+        
+        <TextBlock Padding="0,10,0,0">Liczba sztuk</TextBlock>
+        <xctk:IntegerUpDown Value="{Binding Count}" Increment="5"/>
+        
+        <StackPanel 
+            Orientation="Horizontal" 
+            HorizontalAlignment="Right"
+            Margin="0,10,0,0">
+            <Button Click="RefillClick">Uzupełnij</Button>
+            <Button Click="CancelClick" Margin="10,0,0,0">Anuluj</Button>
+        </StackPanel>
+    </StackPanel>
+</Window>

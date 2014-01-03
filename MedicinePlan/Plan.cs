@@ -72,5 +72,10 @@ namespace MedicinePlan
                 }
             }
         }
+
+        public IDosage CurrentDosage(DateTime asof)
+        {
+            return this.DosagesValidOn(asof, asof).Select(x => x.Dosage).SingleOrDefault();
+        }
     }
 }
