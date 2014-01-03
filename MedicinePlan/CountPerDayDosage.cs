@@ -4,21 +4,21 @@ namespace MedicinePlan
 {
     public class CountPerDayDosage : IDosage
     {
-        private readonly int countPerDay;
+        public int CountPerDay { get; private set; }
 
         public CountPerDayDosage(int countPerDay)
         {
-            this.countPerDay = countPerDay;
+            this.CountPerDay = countPerDay;
         }
 
         public int CalculateUsed(DateTime fromDate, DateTime toDate)
         {
-            return (int)Math.Floor((toDate - fromDate).TotalDays) * this.countPerDay;
+            return (int)Math.Floor((toDate - fromDate).TotalDays) * this.CountPerDay;
         }
 
         public DateTime CalculateExhaustionDate(Stock stock)
         {
-            return stock.AsOfDate.AddDays(Math.Floor(stock.Count / (double)countPerDay));
+            return stock.AsOfDate.AddDays(Math.Floor(stock.Count / (double)this.CountPerDay));
         }
     }
 }

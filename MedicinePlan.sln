@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedicinePlan", "MedicinePla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{26E96541-6131-4162-AEC0-7DA3D0686FC6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{ED08B239-B166-4AF4-9162-D6D5DE458DD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "Frontend\Frontend.csproj", "{DA6D915D-2F94-4779-A36C-6B768D5F5115}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +25,15 @@ Global
 		{26E96541-6131-4162-AEC0-7DA3D0686FC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26E96541-6131-4162-AEC0-7DA3D0686FC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26E96541-6131-4162-AEC0-7DA3D0686FC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA6D915D-2F94-4779-A36C-6B768D5F5115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA6D915D-2F94-4779-A36C-6B768D5F5115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA6D915D-2F94-4779-A36C-6B768D5F5115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA6D915D-2F94-4779-A36C-6B768D5F5115}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DA6D915D-2F94-4779-A36C-6B768D5F5115} = {ED08B239-B166-4AF4-9162-D6D5DE458DD6}
 	EndGlobalSection
 EndGlobal
