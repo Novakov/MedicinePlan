@@ -27,6 +27,11 @@ namespace Frontend
 
             var supplies = new Supplies();
             supplies.AddDosage(new Medicine("VitaminumC"), DateTime.Today.AddDays(-7), new CountPerDayDosage(5));
+            supplies.Refill(new Medicine("VitaminumC"), new Stock(100, DateTime.Today.AddDays(-7)));
+            supplies.AddDosage(new Medicine("VitaminumD"), DateTime.Today.AddDays(-7), new CountPerDayDosage(5));
+            supplies.Refill(new Medicine("VitaminumD"), new Stock(100, DateTime.Today.AddDays(-7)));
+            supplies.AddDosage(new Medicine("VitaminumE"), DateTime.Today.AddDays(-7), new CountPerDayDosage(5));
+            supplies.Refill(new Medicine("VitaminumE"), new Stock(100, DateTime.Today.AddDays(-7)));
 
             this.DataContext = new ViewModels.MainViewModel(supplies);
         }

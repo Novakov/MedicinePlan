@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -18,6 +17,7 @@ namespace Frontend.ViewModels
 
         public ICommand AddMedicineCommand { get; set; }
         public ICommand RefillCommand { get; set; }
+        public ICommand RefillAllCommand { get; set; }
 
         public MainViewModel(Supplies supplies)
         {
@@ -25,10 +25,25 @@ namespace Frontend.ViewModels
 
             this.AddMedicineCommand = new DelegateCommand(AddMedicine);
             this.RefillCommand = new DelegateCommand<string>(RefillMedicine);
+            this.RefillAllCommand = new DelegateCommand(RefillAllMedicine);
 
             this.Medicines = new ObservableCollection<MedicineStatus>();
 
             this.DumpSuppliesStatus();
+        }
+
+        private void RefillAllMedicine()
+        {
+            var viewModel = new RefillAllMedicinesViewModel(this.supplies.GetMedicines().Select(x => x.Name));
+
+            var window = new RefillAllMedicinesWindow(viewModel);
+
+            if (window.ShowDialog() == true)
+            {
+                this.supplies.Refill(viewModel.Stocks.ToDictionary(x => new Medicine(x.MedicineName), x => new Stock(x.Count, viewModel.Date)));
+                
+                this.DumpSuppliesStatus();                
+            }
         }
 
         private void RefillMedicine(string medicineName)

@@ -45,6 +45,14 @@ namespace MedicinePlan
             this[medicine].Stock = remainingFromCurrentStock.Add(stockToAdd);
         }
 
+        public void Refill(IDictionary<Medicine, Stock> stocksToAdd)
+        {
+            foreach (var stock in stocksToAdd)
+            {
+                this.Refill(stock.Key, stock.Value);
+            }
+        }
+
         public Stock RemainingStock(Medicine medicine, DateTime asof)
         {
             return this[medicine].Plan.CalculateRemaining(this[medicine].Stock, asof);

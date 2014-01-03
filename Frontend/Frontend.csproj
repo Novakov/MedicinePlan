@@ -75,6 +75,9 @@
       <DependentUpon>AddMedicineWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="RefillAllMedicinesWindow.xaml.cs">
+      <DependentUpon>RefillAllMedicinesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RefillMedicineWindow.xaml.cs">
       <DependentUpon>RefillMedicineWindow.xaml</DependentUpon>
     </Compile>
@@ -83,6 +86,7 @@
     <Compile Include="ViewModels\DosageStringValueConverter.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MedicineStatus.cs" />
+    <Compile Include="ViewModels\RefillAllMedicinesViewModel.cs" />
     <Compile Include="ViewModels\RefillMedicineViewModel.cs" />
     <Page Include="AddMedicineWindow.xaml">
       <SubType>Designer</SubType>
@@ -100,6 +104,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="RefillAllMedicinesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RefillMedicineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
