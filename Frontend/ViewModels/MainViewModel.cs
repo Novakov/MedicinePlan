@@ -49,7 +49,7 @@ namespace Frontend.ViewModels
 
             if (window.ShowDialog() == true)
             {
-                this.supplies.Refill(viewModel.Stocks.ToDictionary(x => new Medicine(x.MedicineName), x => new Stock(x.Count, viewModel.Date)));
+                this.supplies.Refill(viewModel.Stocks.Where(x => x.Count > 0).ToDictionary(x => new Medicine(x.MedicineName), x => new Stock(x.Count, viewModel.Date)));
 
                 this.DumpSuppliesStatus();
             }

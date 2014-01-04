@@ -18,7 +18,7 @@ namespace MedicinePlan
 
         public DateTime CalculateExhaustionDate(Stock stock)
         {
-            return stock.AsOfDate.AddDays(Math.Floor(stock.Count / (double)this.CountPerDay));
+            return stock.AsOfDate.AddDays(Math.Max(Math.Floor(stock.Count/(double) this.CountPerDay) - 1, 0));
         }
     }
 }

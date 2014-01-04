@@ -13,7 +13,7 @@
         <TextBox Text="{Binding Name}"/>        
         <TextBlock Margin="0,20,0,0">Liczba tabletek na dobę</TextBlock>
         <toolkit:IntegerUpDown Minimum="1" Increment="1" Value="{Binding CountPerDay}"/>
-        <TextBlock Margin="0,20,0,0">Liczba tabletek na dobę</TextBlock>
+        <TextBlock Margin="0,20,0,0">Od kiedy przyjmowane</TextBlock>
         <DatePicker SelectedDateFormat="Long" SelectedDate="{Binding Date}"/>
         <StackPanel 
             Margin="0,20,00,0"            

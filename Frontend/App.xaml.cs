@@ -13,5 +13,9 @@ namespace Frontend
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            this.DispatcherUnhandledException += (sender, args) => MessageBox.Show(args.Exception.Message + "\n" + args.Exception.StackTrace);
+        }
     }
 }
