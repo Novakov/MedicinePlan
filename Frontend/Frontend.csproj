@@ -35,9 +35,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML">
+      <HintPath>..\packages\ClosedXML.0.69.2\lib\net40-client\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\packages\DocumentFormat.OpenXml.1.0\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -85,6 +92,7 @@
     <Compile Include="RefillMedicineWindow.xaml.cs">
       <DependentUpon>RefillMedicineWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ExcelReportBuilder.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="ViewModels\AddMedicineViewModel.cs" />
     <Compile Include="ViewModels\DesignMainViewModel.cs" />

@@ -28,6 +28,12 @@
                 Content="Uzupełnij wszystkie"
                 Command="{Binding RefillAllCommand}"/>
 
+            <Button 
+                Margin="10,0,0,0"
+                FontSize="15"                
+                Content="Eksportuj do Excel"
+                Command="{Binding ExcelReportCommand}"/>
+            
             <TextBlock 
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"

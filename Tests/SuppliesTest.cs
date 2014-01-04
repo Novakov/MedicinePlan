@@ -27,7 +27,7 @@ namespace Tests
             var exhaustionDate = supplies.ExhaustionOf(VitaminumC);
 
             // assert
-            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 21)));
+            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 20)));
         }
 
         [Test]

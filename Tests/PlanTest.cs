@@ -66,7 +66,7 @@ namespace Tests
             var exhaustionDate = plan.CalculateExhaustionDate(stock);
 
             // assert
-            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 21)));
+            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 20)));
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Tests
             var exhaustionDate = plan.CalculateExhaustionDate(stock);
 
             // assert
-            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 13)));
+            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 12)));
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace Tests
 
             // assert
             Assert.That(remaining, Is.EqualTo(new Stock(80, new DateTime(2014, 1, 5))));
-            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 21)));
+            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 20)));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace Tests
 
             // assert
             Assert.That(remaining, Is.EqualTo(new Stock(75, new DateTime(2014, 1, 5))));
-            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 20)));
+            Assert.That(exhaustionDate, Is.EqualTo(new DateTime(2014, 1, 19)));
         }
 
         [Test]
