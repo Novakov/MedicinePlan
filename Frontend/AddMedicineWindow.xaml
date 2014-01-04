@@ -6,14 +6,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Frontend.ViewModels"
         mc:Ignorable="d"
-        Title="AddDosage" Height="187" Width="300" WindowStyle="ToolWindow"
+        Title="AddDosage" Height="242" Width="300" WindowStyle="ToolWindow"
         d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:AddMedicineViewModel}}">
     <StackPanel Margin="5,5,5,5">
         <TextBlock>Lek</TextBlock>
         <TextBox Text="{Binding Name}"/>        
         <TextBlock Margin="0,20,0,0">Liczba tabletek na dobę</TextBlock>
         <toolkit:IntegerUpDown Minimum="1" Increment="1" Value="{Binding CountPerDay}"/>
-        
+        <TextBlock Margin="0,20,0,0">Liczba tabletek na dobę</TextBlock>
+        <DatePicker SelectedDateFormat="Long" SelectedDate="{Binding Date}"/>
         <StackPanel 
             Margin="0,20,00,0"            
             Orientation="Horizontal" 

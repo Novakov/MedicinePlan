@@ -20,16 +20,18 @@ namespace Frontend
         {
             SerializerSettings = new JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.All,
+                TypeNameHandling = TypeNameHandling.Objects,
                 Formatting = Formatting.Indented,
                 Converters =
                 {
-                    new MedicineConverter()
+                    new MedicineDictionaryConverter(),
+                    new StockConverter()
                 },
                 ContractResolver = new DefaultContractResolver
                 {
                     DefaultMembersSearchFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
-                }
+                },
+                //ObjectCreationHandling = ObjectCreationHandling.Replace
             };
         }
 
@@ -44,7 +46,29 @@ namespace Frontend
         }
     }
 
-    public class MedicineConverter : JsonConverter
+    public class StockConverter : JsonConverter
+    {
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var s = (Stock) value;  
+
+            new JArray(s.AsOfDate, s.Count).WriteTo(writer);
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            var arr = (JArray) JToken.ReadFrom(reader);
+
+            return new Stock(arr.Value<int>(1), arr.Value<DateTime>(0));
+        }
+
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof (Stock);
+        }
+    }
+
+    public class MedicineDictionaryConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -63,23 +87,30 @@ namespace Frontend
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var dict = (IDictionary)existingValue ?? (IDictionary)Activator.CreateInstance(objectType);
+            var dict = (IDictionary) existingValue;// Activator.CreateInstance(objectType);
+
+            var valueType = objectType.GetGenericArguments()[1];
 
             var jsonDict = (JObject)JToken.ReadFrom(reader);
 
             foreach (var entry in jsonDict.Properties())
             {
-                dict[new Medicine(entry.Name)] = serializer.Deserialize(entry.Value.CreateReader());
+                var jsonReader = entry.Value.CreateReader();
+
+                var z = JToken.ReadFrom(jsonReader);
+
+                dict[new Medicine(entry.Name)] = serializer.Deserialize(entry.Value.CreateReader(), valueType);
             }
 
             return dict;
-        }
+        }        
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType.IsGenericType
-                && objectType.GetGenericTypeDefinition() == typeof(Dictionary<,>)
-                && objectType.GetGenericArguments()[0] == typeof(Medicine);
+            var canConvert = objectType.IsGenericType
+                             && (objectType.GetGenericTypeDefinition() == typeof(Dictionary<,>) || objectType.GetGenericTypeDefinition() == typeof(IDictionary<,>))
+                             && objectType.GetGenericArguments()[0] == typeof(Medicine);
+            return canConvert;
         }
     }
 }

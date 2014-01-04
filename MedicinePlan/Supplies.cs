@@ -8,7 +8,7 @@ namespace MedicinePlan
 {
     public class Supplies
     {
-        private readonly IDictionary<Medicine, MedicineState> medicines;
+        private readonly Dictionary<Medicine, MedicineState> medicines;
 
         public Supplies()
         {

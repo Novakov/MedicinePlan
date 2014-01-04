@@ -94,7 +94,7 @@ namespace Frontend.ViewModels
 
             if (addDosage.ShowDialog() == true)
             {
-                this.supplies.AddDosage(new Medicine(viewModel.Name), DateTime.Today, new CountPerDayDosage(viewModel.CountPerDay));
+                this.supplies.AddDosage(new Medicine(viewModel.Name), viewModel.Date, new CountPerDayDosage(viewModel.CountPerDay));
 
                 this.DumpSuppliesStatus();
             }
