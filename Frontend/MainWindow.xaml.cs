@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,19 +24,59 @@ namespace Frontend
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Supplies supplies;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            var supplies = new Supplies();
-            supplies.AddDosage(new Medicine("VitaminumC"), DateTime.Today.AddDays(-7), new CountPerDayDosage(5));
-            supplies.Refill(new Medicine("VitaminumC"), new Stock(100, DateTime.Today.AddDays(-7)));
-            supplies.AddDosage(new Medicine("VitaminumD"), DateTime.Today.AddDays(-7), new CountPerDayDosage(5));
-            supplies.Refill(new Medicine("VitaminumD"), new Stock(100, DateTime.Today.AddDays(-7)));
-            supplies.AddDosage(new Medicine("VitaminumE"), DateTime.Today.AddDays(-7), new CountPerDayDosage(5));
-            supplies.Refill(new Medicine("VitaminumE"), new Stock(100, DateTime.Today.AddDays(-7)));
+            this.supplies = LoadSupplies();
 
-            this.DataContext = new ViewModels.MainViewModel(supplies);
+            this.DataContext = new ViewModels.MainViewModel(this.supplies);            
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            SaveSupplies();
+        }
+
+        private void SaveSupplies()
+        {
+            var store = IsolatedStorageFile.GetUserStoreForAssembly();
+
+            using (var fs = store.OpenFile("MedicinePlan.json", FileMode.Create))
+            {                
+                var repo = new Repository();
+
+                using (var sw = new StreamWriter(fs))
+                {
+                    sw.Write(repo.DumpJson(this.supplies));
+                }
+            }
+        }
+
+        private static Supplies LoadSupplies()
+        {
+            var store = IsolatedStorageFile.GetUserStoreForAssembly();
+
+            if (store.FileExists("MedicinePlan.json"))
+            {
+                using (var fs = store.OpenFile("MedicinePlan.json", FileMode.Open))
+                {
+                    var repo = new Repository();
+
+                    using (var sr = new StreamReader(fs))
+                    {
+                        var state = sr.ReadToEnd();
+
+                        return repo.ReadJson(state);
+                    }
+                }
+            }
+
+            return new Supplies();
         }
     }
 }

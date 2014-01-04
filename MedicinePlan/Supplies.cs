@@ -84,6 +84,6 @@ namespace MedicinePlan
             public Stock Stock { get; set; }
 
             public Plan Plan { get; private set; }
-        }
+        }       
     }
 }
