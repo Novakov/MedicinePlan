@@ -32,7 +32,7 @@ namespace Frontend
 
             this.supplies = LoadSupplies();
 
-            this.DataContext = new ViewModels.MainViewModel(this.supplies);            
+            this.DataContext = new ViewModels.MainViewModel(this.supplies);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -44,39 +44,37 @@ namespace Frontend
 
         private void SaveSupplies()
         {
-            var store = IsolatedStorageFile.GetUserStoreForAssembly();
+            var path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MedicinePlan");
+            var file = System.IO.Path.Combine(path, "MedicinePlan.json");
 
-            using (var fs = store.OpenFile("MedicinePlan.json", FileMode.Create))
-            {                
-                var repo = new Repository();
-
-                using (var sw = new StreamWriter(fs))
-                {
-                    sw.Write(repo.DumpJson(this.supplies));
-                }
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
             }
+
+            var repo = new Repository();
+
+            File.WriteAllText(file, repo.DumpJson(this.supplies));
         }
 
         private static Supplies LoadSupplies()
         {
-            var store = IsolatedStorageFile.GetUserStoreForAssembly();
+            var path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MedicinePlan");
+            var file = System.IO.Path.Combine(path, "MedicinePlan.json");
 
-            if (store.FileExists("MedicinePlan.json"))
+            if (!Directory.Exists(path) || !File.Exists(file))
             {
-                using (var fs = store.OpenFile("MedicinePlan.json", FileMode.Open))
-                {
-                    var repo = new Repository();
-
-                    using (var sr = new StreamReader(fs))
-                    {
-                        var state = sr.ReadToEnd();
-
-                        return repo.ReadJson(state);
-                    }
-                }
+                return new Supplies();
             }
 
-            return new Supplies();
+            using (var sr = File.OpenText(file))
+            {
+                var repo = new Repository();
+
+                var state = sr.ReadToEnd();
+
+                return repo.ReadJson(state);
+            }
         }
     }
 }
