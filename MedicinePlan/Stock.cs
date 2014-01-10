@@ -40,7 +40,7 @@ namespace MedicinePlan
 
         public override string ToString()
         {
-            return this.AsOfDate.ToShortDateString() + "#" + this.Count;
+            return this.AsOfDate.ToString() + "#" + this.Count;
         }
 
         public Stock Reduce(int used, DateTime end)
