@@ -66,7 +66,7 @@ namespace MedicinePlan
                 var start = list[i].Key.NotBefore(from);
                 var end = list[i + 1].Key.NotAfter(to);
 
-                if (end >= from && start <= to)
+                if (end > from && start <= to)
                 {
                     yield return new DosageValidOver(list[i].Value, start, end);
                 }
@@ -75,7 +75,7 @@ namespace MedicinePlan
 
         public IDosage CurrentDosage(DateTime asof)
         {
-            return this.DosagesValidOn(asof, asof).Select(x => x.Dosage).SingleOrDefault();
+            return this.DosagesValidOn(asof, asof.AddDays(1).AddSeconds(-1)).Select(x => x.Dosage).SingleOrDefault();
         }       
     }    
 }

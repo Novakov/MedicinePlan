@@ -105,6 +105,15 @@
 							Content="Uzupełnij"
 							Command="{Binding DataContext.RefillCommand, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
                             CommandParameter="{Binding Name}"/>
+                            <Button 
+							Grid.Row="2"
+							Grid.Column="0"
+							HorizontalAlignment="Left"
+							Width="150" 
+                            Margin="120,0,0,0"
+							Content="Zmień dawkowanie"
+							Command="{Binding DataContext.ChangeDosageCommand, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                            CommandParameter="{Binding Name}"/>
                         </Grid>
                     </Border>                  
                 </DataTemplate>

@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Frontend.Reports;
 using MedicinePlan;
 using Microsoft.Win32;
@@ -32,6 +33,7 @@ namespace Frontend.ViewModels
         public ICommand RefillCommand { get; set; }
         public ICommand RefillAllCommand { get; set; }
         public ICommand ExcelReportCommand { get; set; }
+        public ICommand ChangeDosageCommand { get; set; }
 
         public MainViewModel(Supplies supplies)
         {
@@ -41,12 +43,33 @@ namespace Frontend.ViewModels
 
             this.AddMedicineCommand = new DelegateCommand(AddMedicine);
             this.RefillCommand = new DelegateCommand<string>(RefillMedicine);
+            this.ChangeDosageCommand = new DelegateCommand<string>(ChangeDosage);
             this.RefillAllCommand = new DelegateCommand(RefillAllMedicine);
             this.ExcelReportCommand = new DelegateCommand(ExcelReport);
 
             this.Medicines = new ObservableCollection<MedicineStatus>();
 
             this.DumpSuppliesStatus();
+        }
+
+        private void ChangeDosage(string medicineName)
+        {
+            var medicine = new Medicine(medicineName);
+
+            var viewModel = new ChangeDosageViewModel
+            {
+                Name = medicineName,
+                NewDosage = ((CountPerDayDosage) this.supplies.CurrentDosage(medicine, this.asOfDate)).CountPerDay
+            };
+
+            var window = new ChangeDosage(viewModel);
+
+            if (window.ShowDialog() == true)
+            {
+                this.supplies.AddDosage(medicine, viewModel.Since, new CountPerDayDosage(viewModel.NewDosage));
+
+                this.DumpSuppliesStatus();
+            }
         }
 
         private void ExcelReport()
@@ -72,7 +95,7 @@ namespace Frontend.ViewModels
 
             if (window.ShowDialog() == true)
             {
-                this.supplies.Refill(viewModel.Stocks.Where(x => x.Count > 0).ToDictionary(x => new Medicine(x.MedicineName), x => new Stock(x.Count, viewModel.Date)));
+                this.supplies.Refill(viewModel.Stocks.Where(x => x.Count > 0).ToDictionary(x => new Medicine(x.MedicineName), x => new Stock(x.Count, viewModel.Date.Date)));
 
                 this.DumpSuppliesStatus();
             }
@@ -86,7 +109,7 @@ namespace Frontend.ViewModels
 
             if (window.ShowDialog() == true)
             {
-                this.supplies.Refill(new Medicine(medicineName), new Stock(viewModel.Count, viewModel.Date));
+                this.supplies.Refill(new Medicine(medicineName), new Stock(viewModel.Count, viewModel.Date.Date));
 
                 this.DumpSuppliesStatus();
             }
