@@ -1,17 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using WindowsStoreApp.ViewModels;
 using MedicinePlan;
 
@@ -51,9 +41,29 @@ namespace WindowsStoreApp
             this.DataContext = viewModel;
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.PageTitle = DateTime.Now.ToString();
+            if (((GridView)sender).SelectedItem != null)
+            {
+                this.BottomAppBar.IsOpen = true;
+
+                foreach (var cmd in ((CommandBar)this.BottomAppBar).SecondaryCommands)
+                {
+                    ((UIElement)cmd).Visibility = Visibility.Visible;
+                }
+            }
+            else
+            {
+                foreach (var cmd in ((CommandBar)this.BottomAppBar).SecondaryCommands)
+                {
+                    ((UIElement)cmd).Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        private void BottomAppBar_Closed(object sender, object e)
+        {
+            this.itemsView.SelectedItem = null;
         }
     }
 }

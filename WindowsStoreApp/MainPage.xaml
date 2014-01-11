@@ -11,14 +11,16 @@
     <Page.Resources>
         <vm:DosageStringValueConverter x:Key="DosageToString"/>
     </Page.Resources>
-    <GridView            
+    <GridView 
+            x:Name="itemsView"
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
             TabIndex="1"            
             Padding="116,0,0,46"
             ItemsSource="{Binding Medicines}"
-            SelectionMode="None"
-            IsSwipeEnabled="false">
+            SelectionMode="Single"
+            IsSwipeEnabled="False"
+        SelectionChanged="Selector_OnSelectionChanged">
         <GridView.ItemTemplate>
             <DataTemplate>
                 <StackPanel 
@@ -34,7 +36,7 @@
                                Margin="15,10,15,0" 
                                FontSize="20"
                                FontWeight="Bold"/>
-                    
+
                     <TextBlock Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" 
                                Style="{StaticResource BaseTextBlockStyle}" 
                                TextWrapping="NoWrap" 
@@ -64,4 +66,24 @@
             </DataTemplate>
         </GridView.ItemTemplate>
     </GridView>
+
+    <Page.BottomAppBar>
+        <CommandBar Closed="BottomAppBar_Closed">
+            <AppBarButton Label="Add medicine" Icon="Add"/>
+            <AppBarButton Label="Refill all">
+                <AppBarButton.Icon>
+                    <BitmapIcon UriSource="Assets/appbar.layer.up.png"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Refill" Visibility="Collapsed">
+                    <AppBarButton.Icon>
+                        <BitmapIcon UriSource="Assets/appbar.layer.up.png"/>
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="Change dosage" Visibility="Collapsed"/>
+            </CommandBar.SecondaryCommands>                       
+        </CommandBar>
+    </Page.BottomAppBar>
 </local:BasePage>

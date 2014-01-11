@@ -5,7 +5,8 @@
     xmlns:local="using:WindowsStoreApp"
     xmlns:vm="using:WindowsStoreApp.ViewModels">
     <Application.Resources>
-        <x:String x:Key="AppName">Medicine plan</x:String>
+        <x:String x:Key="AppName">Medicine plan
+        </x:String>
         <vm:StringFormatConverter x:Key="StringFormat"/>
     </Application.Resources>
 </Application>
