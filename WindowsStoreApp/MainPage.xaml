@@ -5,8 +5,63 @@
     xmlns:local="using:WindowsStoreApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:WindowsStoreApp.ViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
     mc:Ignorable="d">
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button Click="ButtonBase_OnClick">ChangeTitle</Button>
-    </Grid>
+    <Page.Resources>
+        <vm:DosageStringValueConverter x:Key="DosageToString"/>
+    </Page.Resources>
+    <GridView            
+            AutomationProperties.AutomationId="ItemsGridView"
+            AutomationProperties.Name="Items"
+            TabIndex="1"            
+            Padding="116,0,0,46"
+            ItemsSource="{Binding Medicines}"
+            SelectionMode="None"
+            IsSwipeEnabled="false">
+        <GridView.ItemTemplate>
+            <DataTemplate>
+                <StackPanel 
+                    VerticalAlignment="Stretch" 
+                    Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}"
+                    Width="250"
+                    Height="250"
+                    >
+                    <TextBlock Text="{Binding Name}" 
+                               Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" 
+                               Style="{StaticResource BaseTextBlockStyle}" 
+                               Height="60" 
+                               Margin="15,10,15,0" 
+                               FontSize="20"
+                               FontWeight="Bold"/>
+                    
+                    <TextBlock Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" 
+                               Style="{StaticResource BaseTextBlockStyle}" 
+                               TextWrapping="NoWrap" 
+                               Margin="15,0,15,10" 
+                               FontSize="13">
+                        Dosage: <Run Text="{Binding Dosage, Converter={StaticResource DosageToString}}"/>
+                    </TextBlock>
+
+                    <TextBlock Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" 
+                               Style="{StaticResource BaseTextBlockStyle}" 
+                               TextWrapping="NoWrap" 
+                               Margin="15,0,15,10" 
+                               FontSize="13">
+                        Remaining: <Run Text="{Binding Remaining}"/>
+                    </TextBlock>
+
+                    <TextBlock Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" 
+                               Style="{StaticResource BaseTextBlockStyle}" 
+                               TextWrapping="NoWrap" 
+                               Margin="15,0,15,10" 
+                               FontSize="13">
+                        Exhaustion in <Run Text="{Binding ToExhaustion.TotalDays}" FontWeight="Bold"/> days <LineBreak/>
+                        on <Run Text="{Binding ExhaustionDate, Converter={StaticResource StringFormat}, ConverterParameter='D'}"/>
+                    </TextBlock>
+                </StackPanel>
+
+            </DataTemplate>
+        </GridView.ItemTemplate>
+    </GridView>
 </local:BasePage>
