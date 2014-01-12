@@ -1,0 +1,66 @@
+﻿<local:BasePage
+    x:Class="WindowsStoreApp.AddMedicinePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WindowsStoreApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:WindowsStoreApp.ViewModels"
+    xmlns:callisto="using:Callisto.Controls"
+    d:DataContext="{d:DesignInstance Type=vm:AddMedicineViewModel}"
+    d:DesignWidth="416"
+    mc:Ignorable="d">
+    <StackPanel 
+        Margin="116,0,0,46"
+        Width="300"
+        HorizontalAlignment="Left"
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+        >
+        <TextBlock 
+            Margin="0,15,0,0"
+            FontSize="15">Medicine name:</TextBlock>
+        <TextBox
+            Margin="0,15,0,0"
+            Text="{Binding MedicineName, Mode=TwoWay}"
+            />
+        
+        <TextBlock 
+            Margin="0,15,0,0"
+            FontSize="15">Taken since:</TextBlock>
+        <DatePicker
+            Margin="0,15,0,0"
+            Date="{Binding Since, Mode=TwoWay}"
+            />
+        
+        <TextBlock 
+            Margin="0,15,0,0"
+            FontSize="15">Dosage (count per day):</TextBlock>        
+        <callisto:NumericUpDown
+            Margin="0,15,0,0"
+            Minimum="1"
+            Maximum="999999"
+            Increment="1"
+            DecimalPlaces="0"
+            Value="{Binding CountPerDay, Mode=TwoWay}"
+            />
+        
+        <TextBlock 
+            Margin="0,15,0,0"
+            FontSize="15">Remaining:</TextBlock>
+        <callisto:NumericUpDown
+            Margin="0,15,0,0"
+            Minimum="1"
+            Maximum="9999999"
+            Increment="5"
+            DecimalPlaces="0"
+            Value="{Binding Remaining, Mode=TwoWay}"
+            />
+        
+        <Button
+            Margin="0,15,0,0"
+            HorizontalAlignment="Right"
+            Content="Add"
+            Command="{Binding AddCommand}"
+            />
+    </StackPanel>
+</local:BasePage>

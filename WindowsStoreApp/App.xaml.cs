@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using WindowsStoreApp.Common;
+using MedicinePlan;
 
 namespace WindowsStoreApp
 {
@@ -23,6 +24,13 @@ namespace WindowsStoreApp
     /// </summary>
     sealed partial class App : Application
     {
+        public Supplies Supplies { get; private set; }
+
+        public static new App Current
+        {
+            get { return (App)Application.Current; }
+        }
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -48,6 +56,29 @@ namespace WindowsStoreApp
             }
 #endif
 
+            if (this.Supplies == null)
+            {
+                this.Supplies = new Supplies();
+                var dt = new DateTime(2014, 1, 1);
+                var dx = new Medicine("Dexamethason");
+                var p = new Medicine("Polprazol");
+                var dc500 = new Medicine("Depakine Chrono 500");
+                var dc300 = new Medicine("Depakine Chrono 300");
+
+                this.Supplies.AddDosage(dx, dt, new CountPerDayDosage(2));
+                this.Supplies.AddDosage(p, dt, new CountPerDayDosage(1));
+                this.Supplies.AddDosage(dc500, dt, new CountPerDayDosage(2));
+                this.Supplies.AddDosage(dc300, dt, new CountPerDayDosage(1));
+
+                this.Supplies.Refill(new Dictionary<Medicine, Stock>
+                        {
+                            {dx, new Stock(100, dt)},
+                            {p, new Stock(100, dt)},
+                            {dc500, new Stock(100, dt)},
+                            {dc300, new Stock(100, dt)},
+                        });
+            }
+
             var rootFrame = Window.Current.Content as PageLayout;
 
             // Do not repeat app initialization when the Window already has content,
@@ -71,9 +102,8 @@ namespace WindowsStoreApp
                         await SuspensionManager.RestoreAsync();
                     }
                     catch (SuspensionManagerException)
-                    {
-                        //Something went wrong restoring state.
-                        //Assume there is no state and continue
+                    {                        
+
                     }
                 }
 

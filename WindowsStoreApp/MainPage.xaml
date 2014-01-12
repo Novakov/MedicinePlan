@@ -69,7 +69,7 @@
 
     <Page.BottomAppBar>
         <CommandBar Closed="BottomAppBar_Closed">
-            <AppBarButton Label="Add medicine" Icon="Add"/>
+            <AppBarButton Label="Add medicine" Icon="Add" Command="{Binding AddMedicineCommand}"/>
             <AppBarButton Label="Refill all">
                 <AppBarButton.Icon>
                     <BitmapIcon UriSource="Assets/appbar.layer.up.png"/>
