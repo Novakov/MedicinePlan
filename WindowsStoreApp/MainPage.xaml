@@ -61,7 +61,7 @@
                                FontSize="13">
                         Exhaustion in <Run Text="{Binding ToExhaustion.TotalDays}" FontWeight="Bold"/> days <LineBreak/>
                         on <Run Text="{Binding ExhaustionDate, Converter={StaticResource StringFormat}, ConverterParameter='D'}"/>
-                    </TextBlock>                  
+                    </TextBlock>
                 </StackPanel>
 
             </DataTemplate>
@@ -77,7 +77,7 @@
                 </AppBarButton.Icon>
             </AppBarButton>
 
-            <CommandBar.SecondaryCommands>              
+            <CommandBar.SecondaryCommands>
                 <AppBarButton 
                     Label="Refill" 
                     Visibility="Collapsed" 
@@ -87,7 +87,7 @@
                         <BitmapIcon UriSource="Assets/appbar.layer.up.png"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton Label="Change dosage" Visibility="Collapsed"/>
+                <AppBarButton Label="Change dosage" Visibility="Collapsed" Command="{Binding ChangeDosageCommand}" CommandParameter="{Binding SelectedMedicine.Name}" Icon="Edit" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

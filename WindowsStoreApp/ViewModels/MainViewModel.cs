@@ -21,6 +21,8 @@ namespace WindowsStoreApp.ViewModels
         public ICommand RefillCommand { get; private set; }
         public ICommand RefillAllCommand { get; private set; }
 
+        public ICommand ChangeDosageCommand { get; private set; }
+
         public object SelectedMedicine { get; set; }
 
         public MainViewModel(Supplies supplies, INavigation navigation)
@@ -36,7 +38,14 @@ namespace WindowsStoreApp.ViewModels
             this.RefillCommand = new RelayCommand<string>(Refill);
             this.RefillAllCommand = new RelayCommand(RefillAll);
 
+            this.ChangeDosageCommand = new RelayCommand<string>(ChangeDosage);
+
             this.DumpSuppliesStatus();
+        }
+
+        private void ChangeDosage(string medicineName)
+        {
+            this.navigation.NavigateTo<ChangeDosagePage>(medicineName);
         }
 
         private void RefillAll()
