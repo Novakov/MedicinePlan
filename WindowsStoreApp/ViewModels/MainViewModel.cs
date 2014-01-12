@@ -19,6 +19,7 @@ namespace WindowsStoreApp.ViewModels
 
         public ICommand AddMedicineCommand { get; private set; }
         public ICommand RefillCommand { get; private set; }
+        public ICommand RefillAllCommand { get; private set; }
 
         public object SelectedMedicine { get; set; }
 
@@ -33,8 +34,14 @@ namespace WindowsStoreApp.ViewModels
             this.AddMedicineCommand = new RelayCommand(AddMedicine);
 
             this.RefillCommand = new RelayCommand<string>(Refill);
+            this.RefillAllCommand = new RelayCommand(RefillAll);
 
             this.DumpSuppliesStatus();
+        }
+
+        private void RefillAll()
+        {
+            this.navigation.NavigateTo<RefillAllPage>();
         }
 
         private void Refill(string medicine)
