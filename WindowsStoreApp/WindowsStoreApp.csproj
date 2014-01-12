@@ -135,6 +135,7 @@
     <Compile Include="RefillPage.xaml.cs">
       <DependentUpon>RefillPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Repository.cs" />
     <Compile Include="ViewModels\AddMedicineViewModel.cs" />
     <Compile Include="ViewModels\DosageStringValueConverter.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -187,6 +188,9 @@
   <ItemGroup>
     <Reference Include="Callisto">
       <HintPath>..\packages\Callisto.1.4.0\lib\netcore451\Callisto.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\netcore45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

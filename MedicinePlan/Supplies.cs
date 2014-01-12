@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MedicinePlan
 {
+    [DataContract]
     public class Supplies
     {
+        [DataMember]
         private readonly Dictionary<Medicine, MedicineState> medicines;
 
         public Supplies()

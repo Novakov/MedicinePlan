@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using WindowsStoreApp.Common;
 using MedicinePlan;
+using Windows.Storage;
+using System.Threading.Tasks;
 
 namespace WindowsStoreApp
 {
@@ -58,26 +60,8 @@ namespace WindowsStoreApp
 
             if (this.Supplies == null)
             {
-                this.Supplies = new Supplies();
-                var dt = new DateTime(2014, 1, 1);
-                var dx = new Medicine("Dexamethason");
-                var p = new Medicine("Polprazol");
-                var dc500 = new Medicine("Depakine Chrono 500");
-                var dc300 = new Medicine("Depakine Chrono 300");
-
-                this.Supplies.AddDosage(dx, dt, new CountPerDayDosage(2));
-                this.Supplies.AddDosage(p, dt, new CountPerDayDosage(1));
-                this.Supplies.AddDosage(dc500, dt, new CountPerDayDosage(2));
-                this.Supplies.AddDosage(dc300, dt, new CountPerDayDosage(1));
-
-                this.Supplies.Refill(new Dictionary<Medicine, Stock>
-                        {
-                            {dx, new Stock(100, dt)},
-                            {p, new Stock(100, dt)},
-                            {dc500, new Stock(100, dt)},
-                            {dc300, new Stock(100, dt)},
-                        });
-            }
+                this.Supplies = await LoadData();
+            }           
 
             var rootFrame = Window.Current.Content as PageLayout;
 
@@ -102,7 +86,7 @@ namespace WindowsStoreApp
                         await SuspensionManager.RestoreAsync();
                     }
                     catch (SuspensionManagerException)
-                    {                        
+                    {
 
                     }
                 }
@@ -122,6 +106,26 @@ namespace WindowsStoreApp
             Window.Current.Activate();
         }
 
+        private async Task<MedicinePlan.Supplies> LoadData()
+        {
+            try
+            {
+                using (var stream = await ApplicationData.Current.LocalFolder.OpenStreamForReadAsync("medicines.json"))
+                {
+                    using (var sr = new StreamReader(stream))
+                    {
+                        var repo = new Repository();
+
+                        return repo.ReadJson(await sr.ReadToEndAsync());
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                return new Supplies();
+            }
+        }
+
         /// <summary>
         /// Invoked when Navigation to a certain page fails
         /// </summary>
@@ -139,10 +143,22 @@ namespace WindowsStoreApp
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+
+            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("medicines.json", CreationCollisionOption.ReplaceExisting);
+
+            using (var stream = await file.OpenStreamForWriteAsync())
+            {
+                using (var sw = new StreamWriter(stream))
+                {
+                    var repo = new Repository();
+
+                    await sw.WriteLineAsync(repo.DumpJson(this.Supplies));
+                }
+            }
+
             deferral.Complete();
         }
     }
