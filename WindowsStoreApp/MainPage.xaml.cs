@@ -14,7 +14,7 @@ namespace WindowsStoreApp
         {
             this.InitializeComponent();                       
             
-            var viewModel = new MainViewModel(App.Current.Supplies, this);
+            var viewModel = new MainViewModel(App.Instance.Supplies, this);
 
             this.DataContext = viewModel;
         }

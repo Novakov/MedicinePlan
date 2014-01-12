@@ -26,7 +26,7 @@ namespace WindowsStoreApp
     {
         public Supplies Supplies { get; private set; }
 
-        public static new App Current
+        public static App Instance
         {
             get { return (App)Application.Current; }
         }

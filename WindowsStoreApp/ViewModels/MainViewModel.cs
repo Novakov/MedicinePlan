@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 using WindowsStoreApp.Common;
 using MedicinePlan;
 
@@ -16,6 +18,9 @@ namespace WindowsStoreApp.ViewModels
         public ObservableCollection<MedicineStatus> Medicines { get; private set; }
 
         public ICommand AddMedicineCommand { get; private set; }
+        public ICommand RefillCommand { get; private set; }
+
+        public object SelectedMedicine { get; set; }
 
         public MainViewModel(Supplies supplies, INavigation navigation)
         {
@@ -27,7 +32,14 @@ namespace WindowsStoreApp.ViewModels
 
             this.AddMedicineCommand = new RelayCommand(AddMedicine);
 
+            this.RefillCommand = new RelayCommand<string>(Refill);
+
             this.DumpSuppliesStatus();
+        }
+
+        private void Refill(string medicine)
+        {
+            this.navigation.NavigateTo<RefillPage>(medicine);
         }
 
         private void AddMedicine()

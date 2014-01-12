@@ -20,7 +20,8 @@
             ItemsSource="{Binding Medicines}"
             SelectionMode="Single"
             IsSwipeEnabled="False"
-        SelectionChanged="Selector_OnSelectionChanged">
+            SelectedItem="{Binding SelectedMedicine, Mode=TwoWay}"
+            SelectionChanged="Selector_OnSelectionChanged">
         <GridView.ItemTemplate>
             <DataTemplate>
                 <StackPanel 
@@ -60,7 +61,7 @@
                                FontSize="13">
                         Exhaustion in <Run Text="{Binding ToExhaustion.TotalDays}" FontWeight="Bold"/> days <LineBreak/>
                         on <Run Text="{Binding ExhaustionDate, Converter={StaticResource StringFormat}, ConverterParameter='D'}"/>
-                    </TextBlock>
+                    </TextBlock>                  
                 </StackPanel>
 
             </DataTemplate>
@@ -75,15 +76,19 @@
                     <BitmapIcon UriSource="Assets/appbar.layer.up.png"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Label="Refill" Visibility="Collapsed">
+
+            <CommandBar.SecondaryCommands>              
+                <AppBarButton 
+                    Label="Refill" 
+                    Visibility="Collapsed" 
+                    Command="{Binding RefillCommand}"
+                    CommandParameter="{Binding SelectedMedicine.Name}">
                     <AppBarButton.Icon>
                         <BitmapIcon UriSource="Assets/appbar.layer.up.png"/>
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarButton Label="Change dosage" Visibility="Collapsed"/>
-            </CommandBar.SecondaryCommands>                       
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 </local:BasePage>

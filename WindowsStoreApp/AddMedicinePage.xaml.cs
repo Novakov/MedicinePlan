@@ -17,7 +17,7 @@ namespace WindowsStoreApp
         {
             base.OnNavigatedTo(e);
 
-            this.DataContext = new AddMedicineViewModel(App.Current.Supplies, this);
+            this.DataContext = new AddMedicineViewModel(App.Instance.Supplies, this);
         }
     }
 }
