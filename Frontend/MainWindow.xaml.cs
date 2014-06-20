@@ -33,6 +33,7 @@ namespace Frontend
             this.supplies = LoadSupplies();
 
             this.DataContext = new ViewModels.MainViewModel(this.supplies);
+            ((ViewModels.MainViewModel) this.DataContext).SuppliesChanged += (s, e) => this.SaveSupplies();
         }
 
         protected override void OnClosing(CancelEventArgs e)

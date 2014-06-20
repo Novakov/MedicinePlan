@@ -35,6 +35,8 @@ namespace Frontend.ViewModels
         public ICommand ExcelReportCommand { get; set; }
         public ICommand ChangeDosageCommand { get; set; }
 
+        public event EventHandler SuppliesChanged;
+
         public MainViewModel(Supplies supplies)
         {
             this.supplies = supplies;
@@ -68,6 +70,8 @@ namespace Frontend.ViewModels
             {
                 this.supplies.AddDosage(medicine, viewModel.Since, new CountPerDayDosage(viewModel.NewDosage));
 
+                this.OnSuppliesChanged();
+
                 this.DumpSuppliesStatus();
             }
         }
@@ -97,6 +101,8 @@ namespace Frontend.ViewModels
             {
                 this.supplies.Refill(viewModel.Stocks.Where(x => x.Count > 0).ToDictionary(x => new Medicine(x.MedicineName), x => new Stock(x.Count, viewModel.Date.Date)));
 
+                this.OnSuppliesChanged();
+
                 this.DumpSuppliesStatus();
             }
         }
@@ -110,6 +116,24 @@ namespace Frontend.ViewModels
             if (window.ShowDialog() == true)
             {
                 this.supplies.Refill(new Medicine(medicineName), new Stock(viewModel.Count, viewModel.Date.Date));
+
+                this.OnSuppliesChanged();
+
+                this.DumpSuppliesStatus();
+            }
+        }
+
+        private void AddMedicine()
+        {
+            var viewModel = new AddMedicineViewModel();
+
+            var addDosage = new AddMedicineWindow(viewModel);
+
+            if (addDosage.ShowDialog() == true)
+            {
+                this.supplies.AddDosage(new Medicine(viewModel.Name), viewModel.Date, new CountPerDayDosage(viewModel.CountPerDay));
+
+                this.OnSuppliesChanged();
 
                 this.DumpSuppliesStatus();
             }
@@ -132,17 +156,11 @@ namespace Frontend.ViewModels
             }
         }
 
-        private void AddMedicine()
+        private void OnSuppliesChanged()
         {
-            var viewModel = new AddMedicineViewModel();
-
-            var addDosage = new AddMedicineWindow(viewModel);
-
-            if (addDosage.ShowDialog() == true)
+            if (this.SuppliesChanged != null)
             {
-                this.supplies.AddDosage(new Medicine(viewModel.Name), viewModel.Date, new CountPerDayDosage(viewModel.CountPerDay));
-
-                this.DumpSuppliesStatus();
+                this.SuppliesChanged(this, EventArgs.Empty);
             }
         }
     }
