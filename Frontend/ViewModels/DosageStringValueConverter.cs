@@ -28,6 +28,11 @@ namespace Frontend.ViewModels
             return ((dynamic)this).AsString((dynamic)value);
         }
 
+        private string AsString(NoDosage dosage)
+        {
+            return "Nie przyjmowane";
+        }
+
         private string AsString(CountPerDayDosage dosage)
         {
             return string.Format("{0}/doba", dosage.CountPerDay);

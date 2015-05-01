@@ -75,7 +75,8 @@ namespace MedicinePlan
 
         public IDosage CurrentDosage(DateTime asof)
         {
-            return this.DosagesValidOn(asof, asof.AddDays(1).AddSeconds(-1)).Select(x => x.Dosage).SingleOrDefault();
+            return this.DosagesValidOn(asof, asof.AddDays(1).AddSeconds(-1)).Select(x => x.Dosage).SingleOrDefault()
+                ?? new NoDosage();
         }       
     }    
 }
