@@ -71,49 +71,62 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock
-							Grid.Column="0"
-							Grid.Row="0"
-							Grid.RowSpan="2"
-							FontSize="25"
-							VerticalAlignment="Center"
-							Text="{Binding Name}"/>
+							        Grid.Column="0"
+							        Grid.Row="0"
+							        Grid.RowSpan="2"
+							        FontSize="25"
+							        VerticalAlignment="Center"
+							        Text="{Binding Name}"/>
                                 <TextBlock
-							Grid.Column="1"
-							Grid.Row="0"
-							VerticalAlignment="Center"
-							FontSize="15"
-							Text="{Binding Remaining}" />
+							        Grid.Column="1"
+							        Grid.Row="0"
+							        VerticalAlignment="Center"
+							        FontSize="15"
+							        Text="{Binding Remaining}" />
                                 <TextBlock 
-							Grid.Column="1"
-							Grid.Row="1"
-							VerticalAlignment="Center"
-							FontSize="13"
-							Text="{Binding Dosage, Converter={StaticResource DosageTostring}}"/>
+							        Grid.Column="1"
+							        Grid.Row="1"
+							        VerticalAlignment="Center"
+							        FontSize="13"
+							        Text="{Binding Dosage, Converter={StaticResource DosageTostring}}"/>
                                 <TextBlock 
-							Grid.Column="2"
-							Grid.Row="0"
-							Grid.RowSpan="2"
-							FontSize="20"
-							VerticalAlignment="Center"                              
-							Text="{Binding ExhaustionDate, StringFormat=\{0:yyyy-MM-dd\}}"/>
+							        Grid.Column="2"
+							        Grid.Row="0"
+							        Grid.RowSpan="2"
+							        FontSize="20"
+							        VerticalAlignment="Center"                              
+							        Text="{Binding ExhaustionDate, StringFormat=\{0:yyyy-MM-dd\}}"/>
 
                                 <Button 
-							Grid.Row="2"
-							Grid.Column="0"
-							HorizontalAlignment="Left"
-							Width="100" 
-							Content="Uzupełnij"
-							Command="{Binding DataContext.RefillCommand, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
-                            CommandParameter="{Binding Name}"/>
+							        Grid.Row="2"
+							        Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+							        HorizontalAlignment="Left"
+							        Width="100" 
+							        Content="Uzupełnij"
+							        Command="{Binding DataContext.RefillCommand, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                                    CommandParameter="{Binding Name}"/>
                                 <Button 
-							Grid.Row="2"
-							Grid.Column="0"
-							HorizontalAlignment="Left"
-							Width="150" 
-                            Margin="120,0,0,0"
-							Content="Zmień dawkowanie"
-							Command="{Binding DataContext.ChangeDosageCommand, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
-                            CommandParameter="{Binding Name}"/>
+							        Grid.Row="2"
+							        Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+							        HorizontalAlignment="Left"
+							        Width="150" 
+                                    Margin="120,0,0,0"
+							        Content="Zmień dawkowanie"
+							        Command="{Binding DataContext.ChangeDosageCommand, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                                    CommandParameter="{Binding Name}"/>
+                                <Button
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+                                    HorizontalAlignment="Left"
+                                    Width="100"
+                                    Margin="290,0,0,0"
+                                    Content="Usuń"
+                                    Command="{Binding Path=DataContext.RemoveMedicineCommand, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                                    CommandParameter="{Binding Name}"
+                                    />
                             </Grid>
                         </Border>
                     </DataTemplate>

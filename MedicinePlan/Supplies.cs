@@ -73,6 +73,11 @@ namespace MedicinePlan
             return this[medicine].Plan.CurrentDosage(asof);
         }
 
+        public void RemoveMedicine(Medicine medicine)
+        {
+            this.medicines.Remove(medicine);
+        }
+
         private class MedicineState
         {
             public MedicineState()
@@ -84,6 +89,6 @@ namespace MedicinePlan
             public Stock Stock { get; set; }
 
             public Plan Plan { get; private set; }
-        }       
+        }
     }
 }

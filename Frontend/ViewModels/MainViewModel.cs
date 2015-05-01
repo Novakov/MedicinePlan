@@ -34,6 +34,7 @@ namespace Frontend.ViewModels
         public ICommand RefillAllCommand { get; set; }
         public ICommand ExcelReportCommand { get; set; }
         public ICommand ChangeDosageCommand { get; set; }
+        public ICommand RemoveMedicineCommand { get; set; }
 
         public event EventHandler SuppliesChanged;
 
@@ -48,8 +49,16 @@ namespace Frontend.ViewModels
             this.ChangeDosageCommand = new DelegateCommand<string>(ChangeDosage);
             this.RefillAllCommand = new DelegateCommand(RefillAllMedicine);
             this.ExcelReportCommand = new DelegateCommand(ExcelReport);
+            this.RemoveMedicineCommand = new DelegateCommand<string>(RemoveMedicine);
 
             this.Medicines = new ObservableCollection<MedicineStatus>();
+
+            this.DumpSuppliesStatus();
+        }
+
+        private void RemoveMedicine(string medicineName)
+        {
+            this.supplies.RemoveMedicine(new Medicine(medicineName));
 
             this.DumpSuppliesStatus();
         }
