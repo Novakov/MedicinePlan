@@ -1,0 +1,106 @@
+﻿<FlowDocument x:Class="Frontend.MedicineListPrinted"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:flowdoc="clr-namespace:Frontend.FlowDoc"
+        xmlns:vm="clr-namespace:Frontend.ViewModels"              
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type={x:Type vm:MedicineListPrintedViewModel}, IsDesignTimeCreatable=true}"
+        IsOptimalParagraphEnabled="False"
+        PagePadding="1cm,1cm,1cm,1cm"
+      >
+    <FlowDocument.Resources>
+        <vm:DosageStringValueConverter x:Key="DosageTostring"/>
+
+        <Style TargetType="Paragraph">
+            <Setter Property="FontSize" Value="19"/>
+        </Style>
+
+        <Style TargetType="TableRow" x:Key="HeaderStyle">
+            <Style.Resources>
+                <Style TargetType="Paragraph">
+                    <Setter Property="TextDecorations" Value="Underline"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontSize" Value="22"/>
+                </Style>
+                <Style TargetType="TableCell">
+                    <Setter Property="Padding" Value="0,0,0,0.5cm"/>
+                </Style>
+            </Style.Resources>                       
+        </Style>
+
+        <Style TargetType="TableRow" x:Key="MedicineRow">
+            <Style.Resources>
+                <Style TargetType="TableCell">
+                    <Setter Property="Padding" Value="0,0,0,0.2cm"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        
+        <Style TargetType="Paragraph" x:Key="MedicineName">
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </FlowDocument.Resources>
+
+    <Paragraph>
+        Stan nad dzień:
+        <flowdoc:BindableRun Text="{Binding AsOfDate, StringFormat=\{0:yyyy-MM-dd\}}" DataContext="{Binding}"/>
+    </Paragraph>
+    
+    <flowdoc:ItemsContent ItemsSource="{Binding Medicines}" DataContext="{Binding}">
+        <flowdoc:ItemsContent.ItemsPanel>
+            <DataTemplate>
+                <flowdoc:Fragment>
+                    <Table>
+                        <TableRowGroup  flowdoc:Attached.IsItemsHost="True">
+                            <TableRow Style="{StaticResource HeaderStyle}">
+                                <TableCell>
+                                    <Paragraph>Lek</Paragraph>
+                                </TableCell>                                
+                                <TableCell>
+                                    <Paragraph>Dawkowanie</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Stan</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph>Starczy do:</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                </flowdoc:Fragment>
+            </DataTemplate>
+        </flowdoc:ItemsContent.ItemsPanel>
+        <flowdoc:ItemsContent.ItemTemplate>
+            <DataTemplate>
+                <flowdoc:Fragment d:DataContext="{d:DesignInstance Type={x:Type vm:MedicineStatus}}">
+                    <TableRow Style="{StaticResource MedicineRow}">
+                        <TableCell>
+                            <Paragraph Style="{StaticResource MedicineName}" >
+                                <flowdoc:BindableRun Text="{Binding Name}" />
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell>
+                            <Paragraph>
+                                <flowdoc:BindableRun Text="{Binding Dosage, Converter={StaticResource DosageTostring}}"/>
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell>
+                            <Paragraph>
+                                <flowdoc:BindableRun Text="{Binding Remaining}"/>
+                            </Paragraph>
+                        </TableCell>                        
+                        <TableCell>
+                            <Paragraph>
+                                <flowdoc:BindableRun Text="{Binding ExhaustionDate, StringFormat=\{0:yyyy-MM-dd\}}"/>
+                            </Paragraph>
+                        </TableCell>
+                    </TableRow>
+                </flowdoc:Fragment>
+            </DataTemplate>
+        </flowdoc:ItemsContent.ItemTemplate>
+    </flowdoc:ItemsContent>
+</FlowDocument>

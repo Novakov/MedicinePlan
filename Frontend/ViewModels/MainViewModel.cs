@@ -8,11 +8,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Xps;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Frontend.Reports;
 using MedicinePlan;
 using Microsoft.Win32;
+using Paragraph = System.Windows.Documents.Paragraph;
+using Run = System.Windows.Documents.Run;
 
 namespace Frontend.ViewModels
 {
@@ -35,6 +39,7 @@ namespace Frontend.ViewModels
         public ICommand ExcelReportCommand { get; set; }
         public ICommand ChangeDosageCommand { get; set; }
         public ICommand RemoveMedicineCommand { get; set; }
+        public ICommand PrintCommand { get; set; }
 
         public event EventHandler SuppliesChanged;
 
@@ -50,10 +55,37 @@ namespace Frontend.ViewModels
             this.RefillAllCommand = new DelegateCommand(RefillAllMedicine);
             this.ExcelReportCommand = new DelegateCommand(ExcelReport);
             this.RemoveMedicineCommand = new DelegateCommand<string>(RemoveMedicine);
+            this.PrintCommand = new DelegateCommand(Print);
 
             this.Medicines = new ObservableCollection<MedicineStatus>();
 
             this.DumpSuppliesStatus();
+        }
+
+        private void Print()
+        {         
+            PrintDocumentImageableArea ia = null;
+
+            var writer = PrintQueue.CreateXpsDocumentWriter(ref ia);
+
+            if (writer == null)
+            {
+                return;
+            }
+
+            var report = new MedicineListPrinted(new MedicineListPrintedViewModel()
+            {
+                Medicines = this.Medicines.ToList(),
+                AsOfDate = this.AsOfDate
+            });
+
+            var paginator = ((IDocumentPaginatorSource)report).DocumentPaginator;
+
+            paginator.PageSize = new Size(ia.MediaSizeWidth, ia.MediaSizeHeight);
+
+            report.ColumnWidth = double.PositiveInfinity;
+
+            writer.Write(paginator);
         }
 
         private void RemoveMedicine(string medicineName)

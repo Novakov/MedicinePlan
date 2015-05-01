@@ -34,6 +34,12 @@
                 Content="Eksportuj do Excel"
                 Command="{Binding ExcelReportCommand}"/>
 
+            <Button 
+                Margin="10,0,0,0"
+                FontSize="15"                
+                Content="Drukuj"
+                Command="{Binding PrintCommand}"/>
+
             <TextBlock 
                 Margin="10,0,0,0"
                 VerticalAlignment="Center"

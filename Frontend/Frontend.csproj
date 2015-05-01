@@ -47,6 +47,7 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -89,6 +90,15 @@
       <DependentUpon>ChangeDosage.xaml</DependentUpon>
     </Compile>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="FlowDoc\Attached.cs" />
+    <Compile Include="FlowDoc\BindableRun.cs" />
+    <Compile Include="FlowDoc\BlockTemplateContent.cs" />
+    <Compile Include="FlowDoc\Fragment.cs" />
+    <Compile Include="FlowDoc\Helpers.cs" />
+    <Compile Include="FlowDoc\ItemsContent.cs" />
+    <Compile Include="MedicineListPrinted.xaml.cs">
+      <DependentUpon>MedicineListPrinted.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RefillAllMedicinesWindow.xaml.cs">
       <DependentUpon>RefillAllMedicinesWindow.xaml</DependentUpon>
     </Compile>
@@ -103,6 +113,7 @@
     <Compile Include="ViewModels\DosageStringValueConverter.cs" />
     <Compile Include="ViewModels\ExhaustionDateBackgroundValueConverter.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MedicineListPrintedViewModel.cs" />
     <Compile Include="ViewModels\MedicineStatus.cs" />
     <Compile Include="ViewModels\RefillAllMedicinesViewModel.cs" />
     <Compile Include="ViewModels\RefillMedicineViewModel.cs" />
@@ -126,6 +137,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MedicineListPrinted.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RefillAllMedicinesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
